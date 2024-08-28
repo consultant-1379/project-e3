@@ -1,0 +1,41 @@
+version: '3'
+services:
+  api:
+    build: 
+      context: .
+      dockerfile: Dockerfile-api
+    ports:
+      - "8080:8080"
+    networks:
+      - secure-network
+    depends_on:
+      - maria_db
+  ui:
+    build: 
+      context: .
+      dockerfile: Dockerfile-ui
+    ports:
+      - "80:80" #hostPort:containerPort
+    networks:
+      - secure-network
+    depends_on:
+    - api
+  maria_db:
+    image: "mariadb:10.5.8"
+    restart: always
+#    ports:
+#      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: project_db
+      MYSQL_USER: project_user
+      MYSQL_PASSWORD: nE5kMc7JCGNqwDQM
+      MYSQL_ROOT_PASSWORD: nE5kMc7JCGNqwDQN
+    networks:
+      - secure-network
+    volumes:
+      - db-volume:/var/lib/mysql
+networks:
+  secure-network:
+    driver: bridge
+volumes:
+  db-volume:

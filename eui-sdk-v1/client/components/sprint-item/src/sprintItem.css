@@ -1,0 +1,8 @@
+/* style goes here */
+:host{
+  display: block;
+}
+
+div{
+  margin:5%;
+}
